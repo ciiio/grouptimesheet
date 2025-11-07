@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>工时填报 · Timesheet</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Chart.js CDN -->
+  <script src="<https://cdn.jsdelivr.net/npm/chart.js>"></script>
+</head>
+<body>
+  <header class="container">
+    <h1>工时填报 · Timesheet</h1>
+    <p class="muted">纯前端 · 本地保存 · 可导入导出</p>
+  </header>
+
+  <main class="container">
+    <!-- 录入表单 -->
+    <section class="card">
+      <h2>新增工时</h2>
+      <form id="entry-form">
+        <div class="grid">
+          <label>
+            <span>日期</span>
+            <input type="date" id="date" required />
+          </label>
+          <label>
+            <span>项目</span>
+            <input type="text" id="project" placeholder="例如：官网改版" required />
+          </label>
+          <label>
+            <span>工时（小时）</span>
+            <input type="number" id="hours" min="0" step="0.25" placeholder="例如：1.5" required />
+          </label>
+          <label class="full">
+            <span>备注</span>
+            <input type="text" id="note" placeholder="可选" />
+          </label>
+        </div>
+        <div class="actions">
+          <button type="submit" class="primary">保存</button>
+          <button type="reset" class="ghost" id="reset-form">清空</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 筛选与导入导出 -->
+    <section class="card">
+      <h2>筛选 / 导入导出</h2>
+      <div class="grid">
+        <label>
+          <span>开始日期</span>
+          <input type="date" id="filter-start" />
+        </label>
+        <label>
+          <span>结束日期</span>
+          <input type="date" id="filter-end" />
+        </label>
+        <label>
+          <span>项目包含</span>
+          <input type="text" id="filter-project" placeholder="关键词" />
+        </label>
+        <div class="file-wrap">
+          <input type="file" id="import-file" accept=".csv" />
+          <button id="btn-import" class="ghost">从 CSV 导入</button>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="btn-clear-filters" class="ghost">清除筛选</button>
+        <button id="btn-export" class="secondary">导出 CSV</button>
+        <button id="btn-clear-all" class="danger">清空所有数据</button>
+      </div>
+    </section>
+
+    <!-- 数据表格 -->
+    <section class="card">
+      <h2>记录</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>项目</th>
+              <th>工时</th>
+              <th>备注</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" id="summary" class="muted">共 0 条，合计 0 小时</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <!-- 图表 -->
+    <section class="card">
+      <h2>可视化</h2>
+      <div class="charts">
+        <div>
+          <h3>按项目汇总（小时）</h3>
+          <canvas id="chartByProject"></canvas>
+        </div>
+        <div>
+          <h3>按月趋势（小时）</h3>
+          <canvas id="chartByMonth"></canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container muted small">
+    <p>数据保存在本机浏览器（localStorage）。
+      更换设备会看不到旧数据，请定期导出 CSV 备份。</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
